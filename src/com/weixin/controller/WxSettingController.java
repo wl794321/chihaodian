@@ -20,28 +20,29 @@ import com.weixin.service.WxSettingService;
 public class WxSettingController {
 	@Autowired
 	private WxSettingService wxSettingService;
-	Map<String,Object> map = new HashMap<String, Object>();
+	Map<String, Object> map = new HashMap<String, Object>();
 	Gson gson = new Gson();
+
 	@ResponseBody
-	@RequestMapping(value="/main/wxSettingUpdate.html")
-	public String update(WxSetting wxSetting){
+	@RequestMapping(value = "/main/wxSettingUpdate.html")
+	public String update(WxSetting wxSetting) {
 		wxSetting.setId(1);
-		int rs  =	wxSettingService.updateByPrimaryKeySelective(wxSetting);
-		if(rs!=1){
-			map.put("message","update button error!");
+		int rs = wxSettingService.updateByPrimaryKeySelective(wxSetting);
+		if (rs != 1) {
+			map.put("message", "update button error!");
 		}
 		map.put("rs", rs);
 		return gson.toJson(map);
 	}
-	
-	@RequestMapping(value="/main/wxSettingList.html")
-	public ModelAndView getList(ModelAndView ml){
-		ml.addObject("list",wxSettingService.selectByPrimaryKey(1));
+
+	@RequestMapping(value = "/main/wxSettingList.html")
+	public ModelAndView getList(ModelAndView ml) {
+		ml.addObject("list", wxSettingService.selectByPrimaryKey(1));
 		ml.setViewName("main/setting/info");
-		return  ml ;
+		return ml;
 	}
-	
-//	public WxSetting getSetting(){
-//		return wxSettingService.selectByPrimaryKey(1);
-//	}
+
+	// public WxSetting getSetting(){
+	// return wxSettingService.selectByPrimaryKey(1);
+	// }
 }

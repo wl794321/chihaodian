@@ -22,14 +22,14 @@ public class ButtonService {
 	@Autowired
 	private ButtonMapper buttonMapper;
 	private static Logger log = LoggerFactory.getLogger(ButtonService.class);
-	// ²Ëµ¥´´½¨£¨POST£© ÏÞ1000£¨´Î/Ìì£©
-    public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	// ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½POSTï¿½ï¿½ ï¿½ï¿½1000ï¿½ï¿½ï¿½ï¿½/ï¿½ì£©
+	public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 
-    // ²Ëµ¥²éÑ¯£¨POST£© ÏÞ10000£¨´Î/Ìì£©
-    public static String menu_get_url = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+	// ï¿½Ëµï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½POSTï¿½ï¿½ ï¿½ï¿½10000ï¿½ï¿½ï¿½ï¿½/ï¿½ì£©
+	public static String menu_get_url = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
 
-    // ²Ëµ¥É¾³ý£¨POST£© ÏÞ1000£¨´Î/Ìì£©
-    public static String menu_delete_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	// ï¿½Ëµï¿½É¾ï¿½ï¿½ï¿½ï¿½POSTï¿½ï¿½ ï¿½ï¿½1000ï¿½ï¿½ï¿½ï¿½/ï¿½ì£©
+	public static String menu_delete_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 
 	public int deleteByPrimaryKey(String id) {
 		int rs = 0;
@@ -56,13 +56,15 @@ public class ButtonService {
 	public Button selectByPrimaryKey(String id) {
 		return buttonMapper.selectByPrimaryKey(id);
 	}
-	public int selectCount(Button record){
+
+	public int selectCount(Button record) {
 		return buttonMapper.selectCount(record);
 	}
-	public List<Button>  select(Button record) {
+
+	public List<Button> select(Button record) {
 		return buttonMapper.select(record);
 	}
-	
+
 	public int updateByPrimaryKey(Button record) {
 		int rs = 0;
 		try {
@@ -73,7 +75,7 @@ public class ButtonService {
 		}
 		return rs;
 	}
-	
+
 	public int updateByPrimaryKeySelective(Button record) {
 		int rs = 0;
 		try {
@@ -84,6 +86,7 @@ public class ButtonService {
 		}
 		return rs;
 	}
+
 	public int sort(Button record) {
 		int rs = 0;
 		try {
@@ -96,31 +99,27 @@ public class ButtonService {
 	}
 
 	public JSONObject getMenu(String at) {
-		 // Æ´×°´´½¨²Ëµ¥µÄurl
-        String url = menu_get_url.replace("ACCESS_TOKEN", at);
-        // µ÷ÓÃ½Ó¿Ú²éÑ¯²Ëµ¥
-        JSONObject jsonObject = WeixinUtil.httpRequest(url, "GET", null);
+		String url = menu_get_url.replace("ACCESS_TOKEN", at);
+		JSONObject jsonObject = WeixinUtil.httpRequest(url, "GET", null);
 
-        return jsonObject;
+		return jsonObject;
 	}
 
 	public int createMenuSelf(String menu, String at) {
 		int result = 0;
 
-        // Æ´×°´´½¨²Ëµ¥µÄurl
-        String url = menu_create_url.replace("ACCESS_TOKEN", at);
-       /* // ½«²Ëµ¥¶ÔÏó×ª»»³Éjson×Ö·û´®
-        String jsonMenu = JSONObject.fromObject(menu).toString();*/
-        // µ÷ÓÃ½Ó¿Ú´´½¨²Ëµ¥
-        JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", menu);
+		String url = menu_create_url.replace("ACCESS_TOKEN", at);
 
-        if (null != jsonObject) {
-            if (0 != jsonObject.getInt("errcode")) {
-                result = jsonObject.getInt("errcode");
-                log.error("´´½¨²Ëµ¥Ê§°Ü errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-                log.error("****"+menu+"****");
-            }
-        }
-        return result;
+		JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", menu);
+
+		if (null != jsonObject) {
+			if (0 != jsonObject.getInt("errcode")) {
+				result = jsonObject.getInt("errcode");
+				log.error("ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Ê§ï¿½ï¿½ errcode:{} errmsg:{}", jsonObject.getInt("errcode"),
+						jsonObject.getString("errmsg"));
+				log.error("****" + menu + "****");
+			}
+		}
+		return result;
 	}
 }

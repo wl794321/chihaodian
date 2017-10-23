@@ -22,98 +22,200 @@ import java.net.URL;
  * Created by xy on 2017/8/16.
  */
 public class WeixinUtil {
-    private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);
+	private static Logger log = LoggerFactory.getLogger(WeixinUtil.class);
 
-    /**
-     * ·¢ÆğhttpsÇëÇó²¢»ñÈ¡½á¹û
-     *
-     * @param requestUrl ÇëÇóµØÖ·
-     * @param requestMethod ÇëÇó·½Ê½£¨GET¡¢POST£©
-     * @param outputStr Ìá½»µÄÊı¾İ
-     * @return JSONObject(Í¨¹ıJSONObject.get(key)µÄ·½Ê½»ñÈ¡json¶ÔÏóµÄÊôĞÔÖµ)
-     */
-    public static JSONObject httpRequest(String requestUrl, String requestMethod, String outputStr) {
-        JSONObject jsonObject = null;
-        StringBuffer buffer = new StringBuffer();
-        try {
-            // ´´½¨SSLContext¶ÔÏó£¬²¢Ê¹ÓÃÎÒÃÇÖ¸¶¨µÄĞÅÈÎ¹ÜÀíÆ÷³õÊ¼»¯
-            TrustManager[] tm = { new MyX509TrustManager() };
-            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
-            sslContext.init(null, tm, new java.security.SecureRandom());
-            // ´ÓÉÏÊöSSLContext¶ÔÏóÖĞµÃµ½SSLSocketFactory¶ÔÏó
-            SSLSocketFactory ssf = sslContext.getSocketFactory();
+	/**
+	 * å‘èµ·httpsè¯·æ±‚å¹¶è·å–ç»“æœ
+	 *
+	 * @param requestUrl
+	 *            è¯·æ±‚åœ°å€
+	 * @param requestMethod
+	 *            è¯·æ±‚æ–¹å¼ï¼ˆGETã€POSTï¼‰
+	 * @param outputStr
+	 *            æäº¤çš„æ•°æ®
+	 * @return JSONObject(é€šè¿‡JSONObject.get(key)çš„æ–¹å¼è·å–jsonå¯¹è±¡çš„å±æ€§å€¼)
+	 */
+	public static JSONObject httpRequest(String requestUrl, String requestMethod, String outputStr) {
+		JSONObject jsonObject = null;
+		StringBuffer buffer = new StringBuffer();
+		try {
+			// åˆ›å»ºSSLContextå¯¹è±¡ï¼Œå¹¶ä½¿ç”¨æˆ‘ä»¬æŒ‡å®šçš„ä¿¡ä»»ç®¡ç†å™¨åˆå§‹åŒ–
+			TrustManager[] tm = { new MyX509TrustManager() };
+			SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+			sslContext.init(null, tm, new java.security.SecureRandom());
+			// ä»ä¸Šè¿°SSLContextå¯¹è±¡ä¸­å¾—åˆ°SSLSocketFactoryå¯¹è±¡
+			SSLSocketFactory ssf = sslContext.getSocketFactory();
 
-            URL url = new URL(requestUrl);
-            HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection();
-            httpUrlConn.setSSLSocketFactory(ssf);
+			URL url = new URL(requestUrl);
+			HttpsURLConnection httpUrlConn = (HttpsURLConnection) url.openConnection();
+			httpUrlConn.setSSLSocketFactory(ssf);
 
-            httpUrlConn.setDoOutput(true);
-            httpUrlConn.setDoInput(true);
-            httpUrlConn.setUseCaches(false);
-            // ÉèÖÃÇëÇó·½Ê½£¨GET/POST£©
-            httpUrlConn.setRequestMethod(requestMethod);
+			httpUrlConn.setDoOutput(true);
+			httpUrlConn.setDoInput(true);
+			httpUrlConn.setUseCaches(false);
+			// è®¾ç½®è¯·æ±‚æ–¹å¼ï¼ˆGET/POSTï¼‰
+			httpUrlConn.setRequestMethod(requestMethod);
 
-            if ("GET".equalsIgnoreCase(requestMethod))
-                httpUrlConn.connect();
+			if ("GET".equalsIgnoreCase(requestMethod))
+				httpUrlConn.connect();
 
-            // µ±ÓĞÊı¾İĞèÒªÌá½»Ê±
-            if (null != outputStr) {
-                OutputStream outputStream = httpUrlConn.getOutputStream();
-                // ×¢Òâ±àÂë¸ñÊ½£¬·ÀÖ¹ÖĞÎÄÂÒÂë
-                outputStream.write(outputStr.getBytes("UTF-8"));
-                outputStream.close();
-            }
+			// å½“æœ‰æ•°æ®éœ€è¦æäº¤æ—¶
+			if (null != outputStr) {
+				OutputStream outputStream = httpUrlConn.getOutputStream();
+				// æ³¨æ„ç¼–ç æ ¼å¼ï¼Œé˜²æ­¢ä¸­æ–‡ä¹±ç 
+				outputStream.write(outputStr.getBytes("UTF-8"));
+				outputStream.close();
+			}
 
-            // ½«·µ»ØµÄÊäÈëÁ÷×ª»»³É×Ö·û´®
-            InputStream inputStream = httpUrlConn.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+			// å°†è¿”å›çš„è¾“å…¥æµè½¬æ¢æˆå­—ç¬¦ä¸²
+			InputStream inputStream = httpUrlConn.getInputStream();
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            String str = null;
-            while ((str = bufferedReader.readLine()) != null) {
-                buffer.append(str);
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
-            // ÊÍ·Å×ÊÔ´
-            inputStream.close();
-            inputStream = null;
-            httpUrlConn.disconnect();
-            jsonObject = JSONObject.fromObject(buffer.toString());
-        } catch (ConnectException ce) {
-            log.error("Weixin server connection timed out.");
-        } catch (Exception e) {
-            log.error("https request error:{}", e);
-        }
-        return jsonObject;
-    }
+			String str = null;
+			while ((str = bufferedReader.readLine()) != null) {
+				buffer.append(str);
+			}
+			bufferedReader.close();
+			inputStreamReader.close();
+			// é‡Šæ”¾èµ„æº
+			inputStream.close();
+			inputStream = null;
+			httpUrlConn.disconnect();
+			jsonObject = JSONObject.fromObject(buffer.toString());
+		} catch (ConnectException ce) {
+			log.error("Weixin server connection timed out.");
+		} catch (Exception e) {
+			log.error("https request error:{}", e);
+		}
+		return jsonObject;
+	}
 
-    // »ñÈ¡access_tokenµÄ½Ó¿ÚµØÖ·£¨GET£© ÏŞ200£¨´Î/Ìì£©
-    public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-   /* *//**
-     * è·å–access_token
-     *
-     * @param appid å‡­è¯
-     * @param appsecret å¯†é’¥
-     * @return
-     *//*
-    public static AccessToken getAccessToken(String appid, String appsecret) {
-        AccessToken accessToken = null;
-
-        String requestUrl = access_token_url.replace("APPID", appid).replace("APPSECRET", appsecret);
-        JSONObject jsonObject = httpRequest(requestUrl, "GET", null);
-        // å¦‚æœè¯·æ±‚æˆåŠŸ
-        if (null != jsonObject) {
-            try {
-                accessToken = new AccessToken();
-                accessToken.setToken(jsonObject.getString("access_token"));
-                accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
-            } catch (JSONException e) {
-                accessToken = null;
-                // è·å–tokenå¤±è´¥
-                log.error("è·å–tokenå¤±è´¥ errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-            }
-        }
-        return accessToken;
-    }*/
+	// è·å–access_tokençš„æ¥å£åœ°å€ï¼ˆGETï¼‰ é™200ï¼ˆæ¬¡/å¤©ï¼‰
+	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET"; /* *//**
+																																							 * è·å–access_token
+																																							 *
+																																							 * @param appid
+																																							 *            å‡­è¯
+																																							 * @param appsecret
+																																							 *            å¯†é’¥
+																																							 * @return
+																																							 *//*
+																																								 * public
+																																								 * static
+																																								 * AccessToken
+																																								 * getAccessToken
+																																								 * (
+																																								 * String
+																																								 * appid,
+																																								 * String
+																																								 * appsecret)
+																																								 * {
+																																								 * AccessToken
+																																								 * accessToken
+																																								 * =
+																																								 * null;
+																																								 * 
+																																								 * String
+																																								 * requestUrl
+																																								 * =
+																																								 * access_token_url
+																																								 * .
+																																								 * replace
+																																								 * (
+																																								 * "APPID",
+																																								 * appid
+																																								 * )
+																																								 * .
+																																								 * replace
+																																								 * (
+																																								 * "APPSECRET",
+																																								 * appsecret
+																																								 * )
+																																								 * ;
+																																								 * JSONObject
+																																								 * jsonObject
+																																								 * =
+																																								 * httpRequest
+																																								 * (
+																																								 * requestUrl,
+																																								 * "GET",
+																																								 * null
+																																								 * )
+																																								 * ;
+																																								 * //
+																																								 * å¦‚æœè¯·æ±‚æˆåŠŸ
+																																								 * if
+																																								 * (null
+																																								 * !=
+																																								 * jsonObject)
+																																								 * {
+																																								 * try
+																																								 * {
+																																								 * accessToken
+																																								 * =
+																																								 * new
+																																								 * AccessToken
+																																								 * (
+																																								 * )
+																																								 * ;
+																																								 * accessToken
+																																								 * .
+																																								 * setToken
+																																								 * (
+																																								 * jsonObject
+																																								 * .
+																																								 * getString
+																																								 * (
+																																								 * "access_token"
+																																								 * )
+																																								 * )
+																																								 * ;
+																																								 * accessToken
+																																								 * .
+																																								 * setExpiresIn
+																																								 * (
+																																								 * jsonObject
+																																								 * .
+																																								 * getInt
+																																								 * (
+																																								 * "expires_in"
+																																								 * )
+																																								 * )
+																																								 * ;
+																																								 * }
+																																								 * catch
+																																								 * (JSONException
+																																								 * e)
+																																								 * {
+																																								 * accessToken
+																																								 * =
+																																								 * null;
+																																								 * //
+																																								 * è·å–tokenå¤±è´¥
+																																								 * log
+																																								 * .
+																																								 * error("è·å–tokenå¤±è´¥ errcode:{} errmsg:{}"
+																																								 * ,
+																																								 * jsonObject
+																																								 * .
+																																								 * getInt
+																																								 * (
+																																								 * "errcode"
+																																								 * )
+																																								 * ,
+																																								 * jsonObject
+																																								 * .
+																																								 * getString
+																																								 * (
+																																								 * "errmsg"
+																																								 * )
+																																								 * )
+																																								 * ;
+																																								 * }
+																																								 * }
+																																								 * return
+																																								 * accessToken;
+																																								 * }
+																																								 */
 }
