@@ -7,26 +7,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.weixin.entity.Button;
+import com.weixin.entity.Token;
 import com.weixin.entity.ViewButton;
 import com.weixin.service.ButtonService;
+import com.weixin.util.CommonUtil;
 import com.weixin.util.MenuUtil;
+import com.weixin.util.StringUtil;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping
 public class ButtonController {
 	@Autowired
 	private ButtonService buttonService ;
+	private static Logger log = LoggerFactory.getLogger(ButtonController.class);
 //	private Button button;
 	private Map<String,Object> map = new HashMap<String, Object>();
 	Gson gson = new Gson();
@@ -175,4 +182,47 @@ public class ButtonController {
 		map.put("button",mainBtn);
 		return gson.toJson(MenuUtil.createMenu(map));
 	}
+	
+	
+	//查询全部菜单
+    @SuppressWarnings("unused")
+	@RequestMapping(value = "/get",method = RequestMethod.GET)
+    public String getMenu() {
+        // 调用接口获取access_token
+    	CommonUtil commonUtil = new CommonUtil();
+		StringUtil st = new StringUtil();
+		Token token = commonUtil.getToken(st.getSetting().getAppid(), st.getSetting().getAppsecret());
+        String at = token.getAccessToken();//AccessTokenThread.accessToken.getToken();
+        JSONObject jsonObject =null;
+        if (at != null) {
+            // 调用接口查询菜单
+            jsonObject = buttonService.getMenu(at);
+            // 判断菜单创建结果
+            return String.valueOf(jsonObject);
+        }
+        log.info("token为"+at);
+        return "无数据";
+    }
+
+    @SuppressWarnings("unused")
+	@RequestMapping(value = "/createMenu",method = RequestMethod.POST)
+    public int createMenuSelf(@RequestBody String menu) {
+    	// 调用接口获取access_token
+    	CommonUtil commonUtil = new CommonUtil();
+		StringUtil st = new StringUtil();
+		Token token = commonUtil.getToken(st.getSetting().getAppid(), st.getSetting().getAppsecret());
+        String at = token.getAccessToken();//AccessTokenThread.accessToken.getToken();
+    	int result=0;
+    	if (at != null) {
+    		// 调用接口创建菜单
+    		result = buttonService.createMenuSelf(menu,at);
+    		// 判断菜单创建结果
+    		if (0 == result) {
+    			log.info("菜单创建成功！");
+    		} else {
+    			log.info("菜单创建失败，错误码：" + result);
+    		}
+    	}
+    	return result ;
+    }
 }
