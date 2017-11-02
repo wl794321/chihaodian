@@ -56,8 +56,9 @@ public class UserCtrl extends StringUtil {
 			System.out.println("系统开始，检查oppen_id="
 					+ session.getAttribute("oppen_id"));
 			map = WxUtil.oppenIdInfo(request, session);
-			oppen_id = (String) map.get("oppen_id");
-			
+			if (map.containsKey("oppen_id")) {
+				oppen_id = (String) map.get("oppen_id");
+			}
 			if (StringUtils.isNotEmpty(oppen_id)) {
 				map.put("oppen_id", oppen_id);
 				map.put("username", username);

@@ -28,9 +28,9 @@ public class FileCtrl {
 			String realpath = request.getSession().getServletContext().getRealPath(""); 
 			String path = "";
 			if(realpath.contains("\\")){
-				 path = realpath.substring(0,realpath.lastIndexOf("\\"))+"/upload";
+				 path = realpath.substring(0,realpath.lastIndexOf("\\")).replace("\\chihaodian", "")+"/upload";
 			}else{
-				 path = realpath.substring(0,realpath.lastIndexOf("/"))+"/upload";
+				 path = realpath.substring(0,realpath.lastIndexOf("/")).replace("/chihaodian", "")+"/upload";
 			}
 			System.out.println("path="+path);
 //			String fileName = file.getOriginalFilename();  
@@ -49,7 +49,7 @@ public class FileCtrl {
 	        } 
 	        WxSetting ws = wxSettingService.selectByPrimaryKey(1);
 	        String link = ws.getLink();
-	        if(!StringUtils.isNotEmpty(link)){
+	        if(StringUtils.isNotEmpty(link)){
 	        	link = link.replace("/chihaodian", "");
 	        }
 	        String url = link+"/upload/"+fileName;
