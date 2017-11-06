@@ -49,7 +49,7 @@ public class FileCtrl {
 	        } 
 	        WxSetting ws = wxSettingService.selectByPrimaryKey(1);
 	        String link = ws.getLink();
-	        if(StringUtils.isNotEmpty(link)){
+	        if(!StringUtils.isNotEmpty(link)){
 	        	link = link.replace("/chihaodian", "");
 	        }
 	        String url = link+"/upload/"+fileName;

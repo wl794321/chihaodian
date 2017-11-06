@@ -62,7 +62,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			}
 				else {
 				log.info("不是ajax -- 进入--->>>");
-//				System.out.println("wxSetting.getAppid()=="+wxSetting.getAppid());
+				System.out.println("wxSetting.getAppid()=="+wxSetting.getAppid()+" "+wxSetting.getLink());
+				System.out.println("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxSetting.getAppid()+"&redirect_uri="+wxSetting.getLink()+"/page/userInsert.html?url="
+						+ url
+						+ "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect");
 				response.sendRedirect(
 						"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxSetting.getAppid()+"&redirect_uri="+wxSetting.getLink()+"/page/userInsert.html?url="
 								+ url
@@ -70,7 +73,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		log.info("最终 flag=="+flag);
-//		flag=true ;
+		//flag=true ;
 		return flag;
 	}
 

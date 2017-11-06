@@ -36,7 +36,7 @@ public class ReplyController {
 
 	@RequestMapping(value = "reply.html")
 	public void repaly(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		checkToken(request, response); // 仅在认证微信开发者模式时调用一次即可
+		//checkToken(request, response); // 仅在认证微信开发者模式时调用一次即可
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter pw = response.getWriter();
