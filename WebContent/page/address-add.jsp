@@ -36,7 +36,7 @@
     	<li>
         	<p class="xzdz-p1 f-l">详细地址</p>
         	<p>
-        	<select id="province" name="province"  lang="16" class="input-text" style="width: 20%"></select>
+        	<select id="province" name="province"  lang="3" class="input-text" style="width: 20%"></select>
     <select id="city" name="city" lang="1"  class="input-text" style="width: 20%"></select>
     <select id="area" name="area" lang="0" class="input-text" style="width: 20%"></select></p>
             <input type="text" placeholder="具体到街道门牌信息" class="xzdz-ipt1 f-l" id="addr_name" />
@@ -69,10 +69,13 @@ $(function(){
 					showTip("请选择城市");return;
 				}
 				var area =$('#area').val();
+				if(province == 3 ||province==2 ||province==26||province==24){
+					
+				}else{
 				if(area==0||area==null){
 					showTip("请选择区县");return;
 				}
-				
+				}
 				var addr_name =$('#addr_name').val();
 				if(addr_name==""){
 					showTip("请填写具体收货地址");return;

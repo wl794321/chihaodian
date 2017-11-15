@@ -72,8 +72,12 @@ $(function(){
 					showTip("请选择城市");return;
 				}
 				var area =$('#area').val();
+				if(province == 3 ||province==2 ||province==26||province==24){
+					
+				}else{
 				if(area==0||area==null){
 					showTip("请选择区县");return;
+				}
 				}
 				
 				var addr_name =$('#addr_name').val();

@@ -83,7 +83,7 @@ public class GoodsCtrl extends StringUtil {
 		map.put("goods_img", goods_img);
 		map.put("goods_spe", goods_spe);
 		map.put("goods_price", goods_price);
-		map.put("goods_detail", goods_detail);
+		map.put("goods_detail", goods_detail.replace("/chihaodian", ""));
 		map.put("add_time", add_time);
 		map.put("ctg_id", ctg_id);
 		map.put("status", 1);
@@ -101,7 +101,7 @@ public class GoodsCtrl extends StringUtil {
 		map.put("goods_img", goods_img);		
 		map.put("goods_spe", goods_spe);
 		map.put("goods_price", goods_price);
-		map.put("goods_detail", goods_detail);
+		map.put("goods_detail", goods_detail.replace("/chihaodian", ""));
 		map.put("add_time", add_time);
 		map.put("ctg_id", ctg_id);
 		map.put("goods_id", goods_id);
@@ -207,10 +207,10 @@ public class GoodsCtrl extends StringUtil {
 			@RequestParam(defaultValue = "1") Integer currentPage,
 			HttpServletRequest request) {
 		try {
-			if (StringUtils.isNotEmpty(goods_name)) {
+			/*if (StringUtils.isNotEmpty(goods_name)) {
 				goods_name = new String(goods_name.getBytes("iso8859-1"),
 						"utf-8");
-			}
+			}*/
 			goods.setType(1);
 			goods.setStatus(status);
 			goods.setCtg_id(ctg_id);
@@ -221,7 +221,7 @@ public class GoodsCtrl extends StringUtil {
 			ml.addObject("goods", list);
 			ml.setViewName("page/goods-list");
 			return ml;
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;

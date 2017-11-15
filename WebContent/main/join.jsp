@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <title></title>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/style1.css">
 <link rel="stylesheet" type="text/css" href="css/shoujisc.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="css/showTip.css">
@@ -27,7 +27,8 @@
         </li>
     	<li>
         	<p class="xzdz-p1 f-l">性别</p>
-            <input type="text" placeholder="男或女" class="xzdz-ipt1 f-l" id="sex"/>
+            <input type="radio" name="sex" id="radio1" value="男"/>男
+            <input type="radio" name="sex" id="radio2" value="女"/>女
             <div style="clear:both;"></div>            
         </li>
         <li>
@@ -58,7 +59,8 @@
 				if(phone==""){
 					showTip("请填写手机号码");return;
 				}
-				var sex =$('#sex').val();
+				var sex =$("#radio1").is(":checked")?"男":"女";
+				//alert(sex);
 				if(sex==""){
 					showTip("请填写性别");return;
 				}

@@ -17,13 +17,13 @@
 
 //文件保存目录路径
 String savePath1 = pageContext.getServletContext().getRealPath("") + "main/kindeditor/attached/";
-String savePath = savePath1.substring(0,savePath1.lastIndexOf("\\"))+"/upload/";
+String savePath = savePath1.substring(0,savePath1.lastIndexOf("\\")).replace("\\chihaodian", "")+"/upload/";
 System.out.println(savePath);
 //文件保存目录URL
 //String saveUrl1  = request.getContextPath() + "/main/kindeditor/attached/";
 //StringBuffer url = request.getRequestURL();  
 //String saveUrl = url.delete(url.length() - request.getRequestURI().length(), url.length()).append("/").append("upload/").toString();
-String saveUrl = request.getContextPath()+"/../upload/";
+String saveUrl = request.getContextPath().replace("/chihaodian", "")+"../upload/";
 System.out.println("saveUrl="+saveUrl);
 //定义允许上传的文件扩展名
 HashMap<String, String> extMap = new HashMap<String, String>();
@@ -64,6 +64,7 @@ if(!extMap.containsKey(dirName)){
 //创建文件夹
 savePath += dirName + "/";
 saveUrl += dirName + "/";
+
 File saveDirFile = new File(savePath);
 if (!saveDirFile.exists()) {
 	saveDirFile.mkdirs();
@@ -72,6 +73,8 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 String ymd = sdf.format(new Date());
 savePath += ymd + "/";
 saveUrl += ymd + "/";
+System.out.println(savePath);
+System.out.println(saveUrl);
 File dirFile = new File(savePath);
 if (!dirFile.exists()) {
 	dirFile.mkdirs();

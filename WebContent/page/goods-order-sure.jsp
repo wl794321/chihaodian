@@ -323,9 +323,9 @@ $(function(){
 			showTip("收货地址填写有误，请重新编辑！");return;
 		}
 		var area =$('#area').text();
-		if(area==''){
+		/* if(area==''){
 			showTip("收货地址填写有误，请重新编辑！");return;
-		}
+		} */
 		var note= $('#note').val();
 		
     	var addr_name=addr_user+' '+addr_tel+' '+province+' '+city+' '+ area+' '+addr_name;

@@ -147,7 +147,7 @@
 		var ctg_id = $('#ctg_id').val();
 		var goods_img = $('#filepath').val();
 		var goods_price = $('#goods_price').val();
-		var goods_detail = $('#goods_detail').val();
+		var goods_detail = $('#goods_detail').val().replace("/chihaodian", "");
 		
 		$.ajax({
 			url:'goodsUpdate.html',

@@ -30,7 +30,7 @@ if(username==''){
 	window.location.href='login.jsp';
 }
 </script>
-<title>七巧鸭-后台管理</title>
+<title>鸭先知-后台管理</title>
 </head>
 <body>
 <header class="Hui-header cl"> <a class="Hui-logo l" title="H-ui.admin v2.3" href="main.html">&nbsp;&nbsp;&nbsp;七巧鸭</a> <a class="Hui-logo-m l" href="/" title="H-ui.admin">H-ui</a> <span class="Hui-subtitle l">V1.1</span>

@@ -326,9 +326,14 @@ $(function(){
 			showTip("收货地址填写有误，请重新编辑！");return;
 		}
 		var area =$('#area').text();
-		if(area==''){
-			showTip("收货地址填写有误，请重新编辑！");return;
-		}
+		/* if(province == 3 ||province==2 ||province==26||province==24){
+			
+		}else{
+			if(area==''){
+				showTip("收货地址填写有误，请重新！");return;
+			}
+		} */
+		
 
 		var note= $('#note').val();
     	 addr_name=addr_user+' '+addr_tel+' '+province+' '+city+' '+ area+' '+addr_name;
